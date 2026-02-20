@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
+
 using namespace std;
 
 double sigmoid(double x) {
@@ -14,7 +15,11 @@ double sigmoid_derivative(double x) {
     return x * (1.0 - x);
 }
 
-int trainingTime = 30000;
+double learningRate = 0.1;
+
+uint8_t neuronCount = 16;
+
+uint32_t trainingTime = 60000;
 
 class NeuralNetwork {
 public:
@@ -25,7 +30,6 @@ public:
     vector<vector<double>> weightsInputHidden;
     vector<vector<double>> weightsHiddenOutput;
 
-    double learningRate = 0.1;
 
     NeuralNetwork(int inputSize, int hiddenSize, int outputSize) {
         inputLayer.resize(inputSize);
@@ -97,7 +101,7 @@ public:
 
 int main() {
     // XOR Gate network
-    NeuralNetwork nn_xor(2, 8, 1);
+    NeuralNetwork nn_xor(2, neuronCount, 1);
 
     vector<vector<double>> trainingInputs = {
         {0,0}, {0,1}, {1,0}, {1,1}
@@ -120,7 +124,7 @@ int main() {
     }
 
     // NAND Gate network
-    NeuralNetwork nn_nand(2, 4, 1);
+    NeuralNetwork nn_nand(2, neuronCount, 1);
 
     vector<vector<double>> trainingOutputsNAND = {
         {1}, {1}, {1}, {0}
