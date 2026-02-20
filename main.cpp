@@ -14,6 +14,8 @@ double sigmoid_derivative(double x) {
     return x * (1.0 - x);
 }
 
+int trainingTime = 30000;
+
 class NeuralNetwork {
 public:
     vector<double> inputLayer;
@@ -94,26 +96,47 @@ public:
 };
 
 int main() {
-    NeuralNetwork nn(2, 16, 1);
+    // XOR Gate network
+    NeuralNetwork nn_xor(2, 8, 1);
 
     vector<vector<double>> trainingInputs = {
         {0,0}, {0,1}, {1,0}, {1,1}
     };
-    vector<vector<double>> trainingOutputs = {
+    vector<vector<double>> trainingOutputsXOR = {
         {0}, {1}, {1}, {0}
     };
 
-    for (int epoch = 0; epoch < 35000; epoch++) {
+    for (int epoch = 0; epoch < trainingTime; epoch++) {
         for (int i = 0; i < trainingInputs.size(); i++) {
-            nn.train(trainingInputs[i], trainingOutputs[i]);
+            nn_xor.train(trainingInputs[i], trainingOutputsXOR[i]);
         }
     }
 
     cout << "XOR Test Results:" << endl;
     for (int i = 0; i < trainingInputs.size(); i++) {
-        nn.forward(trainingInputs[i]);
+        nn_xor.forward(trainingInputs[i]);
         cout << trainingInputs[i][0] << " XOR " << trainingInputs[i][1] << " = "
-            << nn.outputLayer[0] << endl;
+            << nn_xor.outputLayer[0] << endl;
+    }
+
+    // NAND Gate network
+    NeuralNetwork nn_nand(2, 4, 1);
+
+    vector<vector<double>> trainingOutputsNAND = {
+        {1}, {1}, {1}, {0}
+    };
+
+    for (int epoch = 0; epoch < trainingTime; epoch++) {
+        for (int i = 0; i < trainingInputs.size(); i++) {
+            nn_nand.train(trainingInputs[i], trainingOutputsNAND[i]);
+        }
+    }
+
+    cout << "\nNAND Test Results:" << endl;
+    for (int i = 0; i < trainingInputs.size(); i++) {
+        nn_nand.forward(trainingInputs[i]);
+        cout << trainingInputs[i][0] << " NAND " << trainingInputs[i][1] << " = "
+            << nn_nand.outputLayer[0] << endl;
     }
 
     return 0;
