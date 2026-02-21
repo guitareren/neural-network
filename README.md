@@ -44,16 +44,19 @@ The project is designed as an educational example to illustrate how **neural net
 After training, the network produces outputs close to the expected **truth tables**:
 
 **XOR Gate**
-`0 XOR 0 = ~0.03`
-`0 XOR 1 = ~0.97`
-`1 XOR 0 = ~0.97`
-`1 XOR 1 = ~0.02`
-
+```
+0 XOR 0 = ~0.03
+0 XOR 1 = ~0.97
+1 XOR 0 = ~0.97
+1 XOR 1 = ~0.02
+```
 **NAND Gate**
-`0 NAND 0 = ~0.97`
-`0 NAND 1 = ~0.96`
-`1 NAND 0 = ~0.96`
-`1 NAND 1 = ~0.03`
+```
+0 NAND 0 = ~0.97
+0 NAND 1 = ~0.96
+1 NAND 0 = ~0.96
+1 NAND 1 = ~0.03
+```
 
 ## Purpose
 This project serves as:
