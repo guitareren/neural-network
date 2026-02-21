@@ -212,7 +212,7 @@ int main() {
     trainNetwork(nn_xor, trainingInputs, trainingOutputsXOR, trainingEpochs);
 
     cout << "Neural Network trained on XOR gate.\n";
-    cout << "Enter XOR expressions (e.g., 1xor(0xor(1xor1)). Ctrl+C to quit.\n";
+    cout << "Enter XOR expressions e.g., 1xor(0xor(1xor1)). Ctrl+C to quit.\n";
 
     string expr;
     while (cin >> expr) {
