@@ -4,22 +4,23 @@
 #include <cstdlib>
 #include <ctime>
 
-
 using namespace std;
 
+// Activation function
 double sigmoid(double x) {
     return 1.0 / (1.0 + exp(-x));
 }
 
+// Derivative of sigmoid function
 double sigmoid_derivative(double x) {
     return x * (1.0 - x);
 }
 
-double learningRate = 0.1;
-
-uint8_t neuronCount = 16;
-
-uint32_t trainingTime = 60000;
+// Adjustable parameters -----------------
+double learningRate = 0.1;       // Learning rate
+uint8_t hiddenNeuronCount = 4;   // Number of hidden neurons
+uint32_t trainingEpochs = 30000; // Training iterations
+// ---------------------------------------
 
 class NeuralNetwork {
 public:
@@ -30,7 +31,6 @@ public:
     vector<vector<double>> weightsInputHidden;
     vector<vector<double>> weightsHiddenOutput;
 
-
     NeuralNetwork(int inputSize, int hiddenSize, int outputSize) {
         inputLayer.resize(inputSize);
         hiddenLayer.resize(hiddenSize);
@@ -40,15 +40,18 @@ public:
         weightsHiddenOutput.resize(hiddenSize, vector<double>(outputSize));
 
         srand(time(0));
+        // Initialize weights between input and hidden layer
         for (int i = 0; i < inputSize; i++)
             for (int j = 0; j < hiddenSize; j++)
                 weightsInputHidden[i][j] = ((double)rand() / RAND_MAX) - 0.5;
 
+        // Initialize weights between hidden and output layer
         for (int i = 0; i < hiddenSize; i++)
             for (int j = 0; j < outputSize; j++)
                 weightsHiddenOutput[i][j] = ((double)rand() / RAND_MAX) - 0.5;
     }
 
+    // Forward propagation
     void forward(const vector<double>& inputs) {
         for (int i = 0; i < inputLayer.size(); i++)
             inputLayer[i] = inputs[i];
@@ -68,6 +71,7 @@ public:
         }
     }
 
+    // Backpropagation training
     void train(const vector<double>& inputs, const vector<double>& targets) {
         forward(inputs);
 
@@ -83,6 +87,7 @@ public:
             hiddenErrors[j] = error;
         }
 
+        // Update weights hidden → output
         for (int j = 0; j < hiddenLayer.size(); j++) {
             for (int k = 0; k < outputLayer.size(); k++) {
                 double delta = learningRate * outputErrors[k] * sigmoid_derivative(outputLayer[k]) * hiddenLayer[j];
@@ -90,6 +95,7 @@ public:
             }
         }
 
+        // Update weights input → hidden
         for (int i = 0; i < inputLayer.size(); i++) {
             for (int j = 0; j < hiddenLayer.size(); j++) {
                 double delta = learningRate * hiddenErrors[j] * sigmoid_derivative(hiddenLayer[j]) * inputLayer[i];
@@ -99,49 +105,51 @@ public:
     }
 };
 
-int main() {
-    // XOR Gate network
-    NeuralNetwork nn_xor(2, neuronCount, 1);
+// -------------------- Helper Functions --------------------
 
+// Training function
+void trainNetwork(NeuralNetwork& nn, const vector<vector<double>>& inputs,
+    const vector<vector<double>>& outputs, int epochs) {
+    for (int epoch = 0; epoch < epochs; epoch++) {
+        for (int i = 0; i < inputs.size(); i++) {
+            nn.train(inputs[i], outputs[i]);
+        }
+    }
+}
+
+// Testing function
+void testNetwork(NeuralNetwork& nn, const vector<vector<double>>& inputs,
+    const string& gateName) {
+    cout << gateName << " Test Results:" << endl;
+    for (int i = 0; i < inputs.size(); i++) {
+        nn.forward(inputs[i]);
+        cout << inputs[i][0] << " " << gateName << " " << inputs[i][1]
+            << " = " << nn.outputLayer[0] << endl;
+    }
+    cout << endl;
+}
+
+// -------------------- main --------------------
+int main() {
     vector<vector<double>> trainingInputs = {
         {0,0}, {0,1}, {1,0}, {1,1}
     };
+
+    // XOR Gate
+    NeuralNetwork nn_xor(2, hiddenNeuronCount, 1);
     vector<vector<double>> trainingOutputsXOR = {
         {0}, {1}, {1}, {0}
     };
+    trainNetwork(nn_xor, trainingInputs, trainingOutputsXOR, trainingEpochs);
+    testNetwork(nn_xor, trainingInputs, "XOR");
 
-    for (int epoch = 0; epoch < trainingTime; epoch++) {
-        for (int i = 0; i < trainingInputs.size(); i++) {
-            nn_xor.train(trainingInputs[i], trainingOutputsXOR[i]);
-        }
-    }
-
-    cout << "XOR Test Results:" << endl;
-    for (int i = 0; i < trainingInputs.size(); i++) {
-        nn_xor.forward(trainingInputs[i]);
-        cout << trainingInputs[i][0] << " XOR " << trainingInputs[i][1] << " = "
-            << nn_xor.outputLayer[0] << endl;
-    }
-
-    // NAND Gate network
-    NeuralNetwork nn_nand(2, neuronCount, 1);
-
+    // NAND Gate
+    NeuralNetwork nn_nand(2, hiddenNeuronCount, 1);
     vector<vector<double>> trainingOutputsNAND = {
         {1}, {1}, {1}, {0}
     };
-
-    for (int epoch = 0; epoch < trainingTime; epoch++) {
-        for (int i = 0; i < trainingInputs.size(); i++) {
-            nn_nand.train(trainingInputs[i], trainingOutputsNAND[i]);
-        }
-    }
-
-    cout << "\nNAND Test Results:" << endl;
-    for (int i = 0; i < trainingInputs.size(); i++) {
-        nn_nand.forward(trainingInputs[i]);
-        cout << trainingInputs[i][0] << " NAND " << trainingInputs[i][1] << " = "
-            << nn_nand.outputLayer[0] << endl;
-    }
+    trainNetwork(nn_nand, trainingInputs, trainingOutputsNAND, trainingEpochs);
+    testNetwork(nn_nand, trainingInputs, "NAND");
 
     return 0;
 }
