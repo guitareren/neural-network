@@ -11,8 +11,8 @@ The project is designed as an educational example to illustrate how **neural net
 ---
 
 ## How to Use
-- Create a new C++ Console Application in the Visual Studio IDE.
-- Copy the source code from GitHub and paste it into your main.cpp file.
+- Create a new `C++ Console Application` in the `Visual Studio IDE`.
+- Copy the source code from GitHub and paste it into your `main.cpp` file.
 - Build and run the project — the program will execute successfully.
 
 ---
