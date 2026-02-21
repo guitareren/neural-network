@@ -8,7 +8,6 @@ The project is designed as an educational example to illustrate how neural netwo
 - `neural-networkWithUserInput.cpp` illustrates an interactive example where the user queries the AI about XOR gate operations, and the AI provides the corresponding output.
 
 ---
-
 ## How to Use
 - Create a new `C++ Console Application` in the `Visual Studio IDE`.
 - Copy the source code from GitHub and paste it into your `main.cpp` file.
