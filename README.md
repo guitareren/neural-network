@@ -1,9 +1,8 @@
 # Neural Network Logic Gates Project
 
 ## Overview
-This project implements a simple **feedforward neural network** in **C++** to demonstrate how fundamental logic gates (**XOR** and **NAND**) can be learned through **supervised training**. The code showcases the principles of **forward propagation**, **backpropagation**, and **weight updates** using the **sigmoid activation function**.  
-
-The project is designed as an educational example to illustrate how **neural networks** can approximate **non-linear functions** and be extended to more complex tasks such as **character recognition** or **word generation**.
+This project implements `a simple feedforward neural network in C++` to demonstrate how fundamental logic gates (XOR and NAND) can be learned through supervised training. The code showcases the principles of `forward propagation`, `backpropagation`, `weight updates`, `bias handling`, and `error tracking` using the `sigmoid activation` function.
+The project is designed as an educational example to illustrate how neural networks can approximate non-linear functions and be extended to more complex tasks such as character recognition or word generation.
 
 - `neural-networkExample.cpp` demonstrates a basic implementation of a neural network in C++.
 - `neural-networkWithUserInput.cpp` illustrates an interactive example where the user queries the AI about XOR gate operations, and the AI provides the corresponding output.
